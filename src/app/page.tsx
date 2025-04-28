@@ -50,6 +50,15 @@ export default function Home() {
             Read our docs
           </a>
         </div>
+        <div className="border">
+          <Image
+            src="main-logo-black-transparent.svg"
+            className="fill-blue-800 dark:fill-white dark:invert "
+            alt="Shandwich Logo"
+            width={400}
+            height={400}
+          />
+        </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
