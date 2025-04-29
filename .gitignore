@@ -45,3 +45,6 @@ next-env.d.ts
 docs/HubSpot Brand Kit/
 docs/HubSpot Brand Kit.zip
 
+
+#sqlite
+dev.db
