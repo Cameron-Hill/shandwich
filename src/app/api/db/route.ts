@@ -7,14 +7,6 @@ export async function GET(): Promise<NextResponse> {
 }
 
 export async function POST(): Promise<NextResponse> {
-  console.log("Initializing db...");
-  try {
-    await createSchema();
-  } catch (error) {
-    console.error("Error creating schema:", error);
-    return new NextResponse("Error creating schema", { status: 500 });
-  }
-
   try {
     console.log("Seeding...");
     await seed();
