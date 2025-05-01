@@ -1,12 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createSchema, getAllData, seed } from "@/db/init";
 
-export async function GET(request: NextRequest): Promise<NextResponse> {
+export async function GET(): Promise<NextResponse> {
   const allData = await getAllData();
   return NextResponse.json(allData);
 }
 
-export async function POST(request: NextRequest): Promise<NextResponse> {
+export async function POST(): Promise<NextResponse> {
   console.log("Initializing db...");
   try {
     await createSchema();
