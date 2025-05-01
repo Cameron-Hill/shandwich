@@ -48,3 +48,4 @@ docs/HubSpot Brand Kit.zip
 
 #sqlite
 dev.db
+.env*.local

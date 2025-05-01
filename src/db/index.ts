@@ -1,8 +1,16 @@
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
 import { DB } from "@/db/schema"; // your generated types or manual schema
+import * as dotenv from "dotenv";
+dotenv.config();
 
-console.log(`Initializing database connection at ${process.env.DATABASE_URL}...`);
+console.log(
+  `Initializing database connection at ${process.env.DATABASE_URL}...`
+);
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is not defined. Is the .env file loaded?");
+}
 
 export const db = new Kysely<DB>({
   dialect: new PostgresDialect({

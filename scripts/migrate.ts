@@ -1,10 +1,15 @@
 import * as path from "path";
 import { promises as fs } from "fs";
 import { Migrator, FileMigrationProvider } from "kysely";
-import db from "@/db";
-import * as dotenv from "dotenv";
 
-dotenv.config();
+import db from "@/db";
+
+const dirname = path.join(
+  path.dirname(path.dirname(__filename)),
+  "src/db/migrations"
+);
+
+console.log(`Running migrations ${dirname}`);
 
 async function migrateToLatest() {
   const migrator = new Migrator({
@@ -13,7 +18,7 @@ async function migrateToLatest() {
       fs,
       path,
       // This needs to be an absolute path.
-      migrationFolder: path.join(__dirname, "src/db/migrations"),
+      migrationFolder: dirname,
     }),
   });
 

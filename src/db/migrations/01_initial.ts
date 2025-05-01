@@ -1,10 +1,10 @@
-import { db } from "@/db";
+import { Kysely } from "kysely";
 
-export async function up() {
+export async function up(db: Kysely<any>) {
   console.log("Creating User Table 😎");
   await db.schema
     .createTable("user")
-    .addColumn("id", "integer", (col) => col.primaryKey().autoIncrement())
+    .addColumn("id", "serial", (col) => col.primaryKey())
     .addColumn("name", "text", (col) => col.notNull())
     .ifNotExists()
     .execute();
@@ -12,7 +12,7 @@ export async function up() {
   console.log("Creating Post table 📪");
   await db.schema
     .createTable("post")
-    .addColumn("id", "integer", (col) => col.primaryKey().autoIncrement())
+    .addColumn("id", "serial", (col) => col.primaryKey())
     .addColumn("author", "integer", (col) => col.notNull())
     .addForeignKeyConstraint("fk_post_author", ["author"], "user", ["id"])
     .ifNotExists()
@@ -21,7 +21,7 @@ export async function up() {
   console.log("Creating Comment Schema 💬");
   await db.schema
     .createTable("comment")
-    .addColumn("id", "integer", (col) => col.primaryKey().autoIncrement())
+    .addColumn("id", "serial", (col) => col.primaryKey())
     .addColumn("post", "integer", (col) => col.notNull())
     .addColumn("author", "integer", (col) => col.notNull())
     .addForeignKeyConstraint("fk_comment_post", ["post"], "post", ["id"])
@@ -32,7 +32,7 @@ export async function up() {
   console.log("Creating Like Schema 👍");
   await db.schema
     .createTable("like")
-    .addColumn("id", "integer", (col) => col.primaryKey().autoIncrement())
+    .addColumn("id", "serial", (col) => col.primaryKey())
     .addColumn("post", "integer", (col) => col.notNull())
     .addColumn("author", "integer", (col) => col.notNull())
     .addForeignKeyConstraint("fk_like_post", ["post"], "post", ["id"])
@@ -52,4 +52,15 @@ export async function up() {
     .execute();
 
   console.log("All tables created successfully. 🎉");
+}
+
+export async function down(db: Kysely<any>) {
+  console.log("Dropping tables... 🗑️");
+  await db.schema.dropTable("follow").execute();
+  await db.schema.dropTable("like").execute();
+  await db.schema.dropTable("comment").execute();
+  await db.schema.dropTable("post").execute();
+  await db.schema.dropTable("user").execute();
+
+  console.log("All tables dropped successfully. 🗑️");
 }
