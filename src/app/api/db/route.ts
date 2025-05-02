@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createSchema, getAllData, seed } from "@/db/init";
+import { getAllData, seed } from "@/db/init";
 
 export async function GET(): Promise<NextResponse> {
   const allData = await getAllData();

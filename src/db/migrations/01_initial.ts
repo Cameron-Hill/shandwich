@@ -1,5 +1,6 @@
 import { Kysely } from "kysely";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function up(db: Kysely<any>) {
   console.log("Creating User Table 😎");
   await db.schema
@@ -54,6 +55,7 @@ export async function up(db: Kysely<any>) {
   console.log("All tables created successfully. 🎉");
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function down(db: Kysely<any>) {
   console.log("Dropping tables... 🗑️");
   await db.schema.dropTable("follow").execute();
