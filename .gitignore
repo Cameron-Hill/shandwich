@@ -49,3 +49,6 @@ docs/HubSpot Brand Kit.zip
 #sqlite
 dev.db
 .env*.local
+
+# clerk configuration (can include secrets)
+/.clerk/
