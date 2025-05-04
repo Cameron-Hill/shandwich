@@ -54,7 +54,7 @@ export default function OnboardingComponent() {
           <div className="bg-gray-50 px-8 py-4">
             <button
               type="submit"
-              className="w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              className="w-full cursor-pointer rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
               aria-label="Complete onboarding"
             >
               Submit

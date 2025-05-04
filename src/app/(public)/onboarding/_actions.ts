@@ -51,13 +51,6 @@ export const completeOnboarding = async (prevState: CompleteOnboardingState | un
         userName: validatedData.userName,
       },
     });
-
-    redirect("/feed");
-
-    return {
-      message: "User metadata Updated",
-      data: { userName: validatedData.userName },
-    };
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
@@ -74,7 +67,10 @@ export const completeOnboarding = async (prevState: CompleteOnboardingState | un
         },
       };
     }
-    console.log("error", error);
-    return { message: "Error Updating User Metadata", success: false };
+
+    redirect("/feed");
+    return {
+      message: "User metadata Updated",
+    };
   }
 };

@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "test": "vitest --run",
     "gen": "kysely-codegen && mv  ./node_modules/kysely-codegen/dist/db.d.ts ./src/db/schema.d.ts",
     "migrate": "tsx ./scripts/migrate.ts",
