@@ -1,6 +1,7 @@
-import db from "@/db";
+import { getDb } from "@/db";
 
 export async function seed() {
+  const db = getDb();
   console.log("🌱 Seeding database...");
 
   // Users
@@ -52,6 +53,7 @@ export async function seed() {
 }
 
 export async function getAllData() {
+  const db = getDb();
   console.log("📦 Fetching all data from the database...");
 
   const users = await db.selectFrom("user").selectAll().execute();

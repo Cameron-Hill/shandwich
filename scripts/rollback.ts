@@ -1,4 +1,4 @@
-import { db } from "@/db"; // your kysely DB instance
+import { getDb } from "@/db"; // your kysely DB instance
 import { Migrator, FileMigrationProvider } from "kysely";
 import path from "path";
 import { promises as fs } from "fs";
@@ -8,6 +8,7 @@ const migrationDir = path.join(path.dirname(path.dirname(__filename)), "database
 console.log(`Rollback last migration at ${migrationDir}`);
 
 async function rollbackLatestMigration() {
+  const db = getDb();
   const migrator = new Migrator({
     db,
     provider: new FileMigrationProvider({

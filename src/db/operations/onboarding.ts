@@ -1,5 +1,5 @@
-import { db } from "@/db";
+import { getDb } from "@/db";
 
 export async function onboardNewUser(id: string, userName: string) {
-  await db.insertInto("user").values({ name: userName, provider_id: id }).execute();
+  await getDb().insertInto("user").values({ name: userName, provider_id: id }).execute();
 }

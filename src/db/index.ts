@@ -10,17 +10,23 @@ if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL is not defined. Is the .env file loaded?");
 }
 
-export const db = new Kysely<DB>({
-  dialect: new PostgresDialect({
-    pool: new Pool({
-      connectionString: process.env.DATABASE_URL,
-    }),
-  }),
-});
+let _db: Kysely<DB> | null = null;
 
-process.on("SIGINT", async () => {
-  await db.destroy(); // Closes Kysely + better-sqlite3
-  process.exit(0);
-});
+export function getDb(): Kysely<DB> {
+  if (!_db) {
+    _db = new Kysely<DB>({
+      dialect: new PostgresDialect({
+        pool: new Pool({
+          connectionString: process.env.DATABASE_URL,
+        }),
+      }),
+    });
 
-export default db;
+    // Handle graceful shutdown
+    process.on("SIGINT", async () => {
+      await _db!.destroy(); // Closes Kysely + better-sqlite3
+      process.exit(0);
+    });
+  }
+  return _db;
+}
