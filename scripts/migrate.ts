@@ -4,10 +4,7 @@ import { Migrator, FileMigrationProvider } from "kysely";
 
 import db from "@/db";
 
-const dirname = path.join(
-  path.dirname(path.dirname(__filename)),
-  "src/db/migrations"
-);
+const dirname = path.join(path.dirname(path.dirname(__filename)), "database/migrations");
 
 console.log(`Running migrations ${dirname}`);
 

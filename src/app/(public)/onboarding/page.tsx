@@ -1,11 +1,15 @@
 "use client";
-
-import * as React from "react";
 import { completeOnboarding } from "./_actions";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+
+const SHOW_TOP_LEVEL_ERROR = false; // Set to true to show top-level error messages
 
 export default function OnboardingComponent() {
   const [state, formAction] = useActionState(completeOnboarding, undefined);
+
+  useEffect(() => {
+    console.log("Onboarding state changed:", state);
+  }, [state]);
 
   return (
     <div className="px-8 py-12 sm:py-16 md:px-20" role="region" aria-label="Onboarding form">
@@ -28,21 +32,25 @@ export default function OnboardingComponent() {
                 type="text"
                 id="userName"
                 name="userName"
+                defaultValue={state?.data?.userName || ""}
                 aria-describedby="userName-description"
                 aria-invalid={state?.errors?.userName ? "true" : "false"}
                 className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
               />
-              {state?.message && (
-                <p
-                  id="userName-error"
-                  className={`mt-2 text-sm ${state.success ? "text-green-500" : "text-red-500"}`}
-                  role="alert"
-                >
-                  {state.message}
-                </p>
-              )}
+              {state?.errors?.userName &&
+                state.errors.userName.map((message, index) => (
+                  <p key={index} id="userName-error" className={"mt-2 text-sm text-red-500"} role="alert">
+                    {message}
+                  </p>
+                ))}
             </div>
+            {state?.message && SHOW_TOP_LEVEL_ERROR && (
+              <p id="userName-error" className={"mt-2 text-sm text-red-500"} role="alert">
+                {state.message}
+              </p>
+            )}
           </div>
+
           <div className="bg-gray-50 px-8 py-4">
             <button
               type="submit"
