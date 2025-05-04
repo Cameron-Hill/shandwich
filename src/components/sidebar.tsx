@@ -4,8 +4,8 @@ import Link from "next/link";
 
 export default function sideBar() {
   return (
-    <div className="bg-primary h-screen w-1/5">
-      <div className="flex items-center justify-center gap-4">
+    <aside className="bg-primary h-screen w-1/5" role="complementary" aria-label="Main navigation">
+      <div className="flex items-center justify-center gap-4" role="banner">
         <Link href="/feed">
           <Image
             src="sandwich-black.svg"
@@ -16,9 +16,9 @@ export default function sideBar() {
           />
         </Link>
       </div>
-      <div className="flex flex-col gap-4 pl-2 text-xl">
+      <nav className="flex flex-col gap-4 pl-2 text-xl" role="navigation" aria-label="Main navigation">
         <Nav />
-      </div>
-    </div>
+      </nav>
+    </aside>
   );
 }
