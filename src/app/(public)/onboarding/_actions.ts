@@ -4,6 +4,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { onboardNewUser } from "@/db/operations/onboarding";
 import { z } from "zod";
+import { revalidateTag } from "next/cache";
 
 const onboardingSchema = z.object({
   userName: z
@@ -22,6 +23,7 @@ interface CompleteOnboardingState {
   errors?: {
     userName?: string[];
   };
+  success?: boolean;
 }
 
 // todo : Can I return a 400 error here?
@@ -62,15 +64,27 @@ export const completeOnboarding = async (prevState: CompleteOnboardingState | un
           },
           {} as Record<string, string[]>,
         ),
+        success: false,
+        data: {
+          userName: formData.get("userName") as string,
+        },
+      };
+    } else {
+      console.error("Error during onboarding:", error);
+      return {
+        message: "An unexpected error occurred. Please try again later.",
+        success: false,
+        errors: {
+          userName: ["An unexpected error occurred. Please try again later."],
+        },
         data: {
           userName: formData.get("userName") as string,
         },
       };
     }
-
-    redirect("/feed");
-    return {
-      message: "User metadata Updated",
-    };
   }
+  return {
+    message: "Onboarding complete!",
+    success: true,
+  };
 };
