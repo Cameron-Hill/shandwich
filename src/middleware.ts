@@ -10,6 +10,7 @@ export default clerkMiddleware(async (auth, req) => {
   }
 
   if (userId && !sessionClaims?.metadata?.onboardingComplete && req.nextUrl.pathname !== "/onboarding") {
+    console.log("User signed in, but is not onboarded, redirecting to onboarding page");
     const onboardingUrl = new URL("/onboarding", req.url);
     return NextResponse.redirect(onboardingUrl);
   }

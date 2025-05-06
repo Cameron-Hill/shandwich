@@ -1,6 +1,5 @@
-// import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { SignedIn, SignedOut, SignIn, SignInButton, SignOutButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, SignOutButton, SignUpButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 

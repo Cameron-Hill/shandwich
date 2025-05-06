@@ -1,13 +1,14 @@
-import db from "@/db";
+import { getDb } from "@/db";
 
 export async function seed() {
+  const db = getDb();
   console.log("🌱 Seeding database...");
 
   // Users
   const [alice, bob, charlie] = await Promise.all([
-    db.insertInto("user").values({ name: "Alice" }).returning("id").executeTakeFirstOrThrow(),
-    db.insertInto("user").values({ name: "Bob" }).returning("id").executeTakeFirstOrThrow(),
-    db.insertInto("user").values({ name: "Charlie" }).returning("id").executeTakeFirstOrThrow(),
+    db.insertInto("user").values({ name: "Alice", provider_id: "1" }).returning("id").executeTakeFirstOrThrow(),
+    db.insertInto("user").values({ name: "Bob", provider_id: "2" }).returning("id").executeTakeFirstOrThrow(),
+    db.insertInto("user").values({ name: "Charlie", provider_id: "3" }).returning("id").executeTakeFirstOrThrow(),
   ]);
   console.log("Created users:", { alice, bob, charlie });
 
@@ -52,6 +53,7 @@ export async function seed() {
 }
 
 export async function getAllData() {
+  const db = getDb();
   console.log("📦 Fetching all data from the database...");
 
   const users = await db.selectFrom("user").selectAll().execute();

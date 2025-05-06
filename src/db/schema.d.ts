@@ -11,7 +11,7 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
 
 export interface Comment {
   author: number;
-  id: Generated<number | null>;
+  id: Generated<number>;
   post: number;
 }
 
@@ -22,18 +22,20 @@ export interface Follow {
 
 export interface Like {
   author: number;
-  id: Generated<number | null>;
+  id: Generated<number>;
   post: number;
 }
 
 export interface Post {
   author: number;
-  id: Generated<number | null>;
+  id: Generated<number>;
 }
 
 export interface User {
-  id: Generated<number | null>;
+  created_at: Generated<string>;
+  id: Generated<number>;
   name: string;
+  provider_id: string;
 }
 
 export interface DB {

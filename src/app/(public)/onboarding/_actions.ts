@@ -1,7 +1,10 @@
 "use server";
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { onboardNewUser } from "@/db/operations/onboarding";
 import { z } from "zod";
+import { revalidateTag } from "next/cache";
 
 const onboardingSchema = z.object({
   userName: z
@@ -14,44 +17,46 @@ const onboardingSchema = z.object({
 
 interface CompleteOnboardingState {
   message: string;
-  success: boolean;
   data?: {
     userName: string;
   };
   errors?: {
     userName?: string[];
   };
+  success?: boolean;
 }
+
+// todo : Can I return a 400 error here?
+// todo : Think about the validation rules a bit more. This is really just an example
+// todo : Move this to an actions folder? each action should have a corresponding api route
 
 export const completeOnboarding = async (prevState: CompleteOnboardingState | undefined, formData: FormData) => {
   const client = await clerkClient();
   const { userId } = await auth();
 
   if (!userId) {
-    return { message: "No Logged In User", success: false };
+    console.warn("User attempted onboarding without being signed in.");
+    return await redirect("/sign-in?redirect_url=/onboarding");
   }
 
   try {
     const parsedData = Object.fromEntries(formData.entries());
     const validatedData = onboardingSchema.parse(parsedData);
 
-    // await client.users.updateUser(userId, {
-    //   publicMetadata: {
-    //     onboardingComplete: true,
-    //     userName: validatedData.userName,
-    //   },
-    // });
+    console.log("Onboarding new user", parsedData.userName, userId);
+    await onboardNewUser(userId, validatedData.userName);
 
-    return {
-      message: "User metadata Updated",
-      success: true,
-      data: { userName: validatedData.userName },
-    };
+    console.log(`Setting user ${userId} onboarded`);
+    await client.users.updateUser(userId, {
+      publicMetadata: {
+        onboardingComplete: true,
+        userName: validatedData.userName,
+      },
+    });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
         message: "Validation Error",
-        success: false,
         errors: error.errors.reduce(
           (acc, err) => {
             acc[err.path[0] as string] = [err.message];
@@ -59,9 +64,27 @@ export const completeOnboarding = async (prevState: CompleteOnboardingState | un
           },
           {} as Record<string, string[]>,
         ),
+        success: false,
+        data: {
+          userName: formData.get("userName") as string,
+        },
+      };
+    } else {
+      console.error("Error during onboarding:", error);
+      return {
+        message: "An unexpected error occurred. Please try again later.",
+        success: false,
+        errors: {
+          userName: ["An unexpected error occurred. Please try again later."],
+        },
+        data: {
+          userName: formData.get("userName") as string,
+        },
       };
     }
-    console.log("error", error);
-    return { message: "Error Updating User Metadata", success: false };
   }
+  return {
+    message: "Onboarding complete!",
+    success: true,
+  };
 };
