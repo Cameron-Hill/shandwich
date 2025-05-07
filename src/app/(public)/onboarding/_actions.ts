@@ -4,7 +4,6 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { onboardNewUser } from "@/db/operations/onboarding";
 import { z } from "zod";
-import { revalidateTag } from "next/cache";
 
 const onboardingSchema = z.object({
   userName: z

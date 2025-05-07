@@ -1,10 +1,9 @@
 "use client";
 import { completeOnboarding } from "./_actions";
-import { use, useActionState, useCallback, useEffect } from "react";
+import { useActionState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
-import { useState, useTransition } from "react";
-import { set } from "zod";
+import { useState } from "react";
 import clsx from "clsx";
 import { FullScreenLoader } from "@/components/FullScreenLoader";
 
@@ -46,7 +45,7 @@ export default function OnboardingComponent() {
         });
     }
     redirectToFeed();
-  }, [state, user, isSignedIn]);
+  }, [state, user, isSignedIn, redirectToFeed]);
 
   return (
     <div className="px-8 py-12 sm:py-16 md:px-20" role="region" aria-label="Onboarding form">

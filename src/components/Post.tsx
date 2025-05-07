@@ -6,21 +6,26 @@ import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Image from "next/image";
+import Rating from "./Rating";
 
-interface PostProps {
+// TODO split into server / client components
+
+export interface PostProps {
   author: string;
   title: string;
   description: string;
   likes: number;
+  rating: number;
+  createdOn: Date;
   image: string;
   comments: Array<{
     author: string;
     content: string;
-    createdAt: Date;
+    createdOn: Date;
   }>;
 }
 
-export function Post({ author, title, description, likes, image, comments }: PostProps) {
+export function Post({ author, title, description, likes, rating, image, comments }: PostProps) {
   const [newComment, setNewComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -63,6 +68,9 @@ export function Post({ author, title, description, likes, image, comments }: Pos
       </CardContent>
       <CardFooter className="flex items-center justify-between">
         <Button variant="ghost" className="flex items-center gap-2">
+          <Rating value={rating} />
+        </Button>
+        <Button variant="ghost" className="flex items-center gap-2">
           <span className="text-muted-foreground">{likes}</span>
           <span>👍</span>
         </Button>
@@ -85,7 +93,7 @@ export function Post({ author, title, description, likes, image, comments }: Pos
         </form>
         <div className="mt-4 space-y-4">
           {comments.map((comment, index) => (
-            <Comment key={index} author={comment.author} content={comment.content} createdAt={comment.createdAt} />
+            <Comment key={index} author={comment.author} content={comment.content} createdAt={comment.createdOn} />
           ))}
         </div>
       </CardContent>

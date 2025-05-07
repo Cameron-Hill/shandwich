@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint --max-warnings=0",
     "lint:fix": "next lint --fix",
     "test": "vitest --run",
     "gen": "kysely-codegen && mv  ./node_modules/kysely-codegen/dist/db.d.ts ./src/db/schema.d.ts",
