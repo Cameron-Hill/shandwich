@@ -9,6 +9,9 @@ import Image from "next/image";
 import Rating from "./Rating";
 
 // TODO split into server / client components
+import Rating from "./Rating";
+
+// TODO split into server / client components
 
 export interface PostProps {
   author: string;
