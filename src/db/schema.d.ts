@@ -9,8 +9,12 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>;
 
+export type Timestamp = ColumnType<Date, Date | string, Date | string>;
+
 export interface Comment {
   author: number;
+  content: string;
+  created_on: Generated<Timestamp>;
   id: Generated<number>;
   post: number;
 }
@@ -22,13 +26,19 @@ export interface Follow {
 
 export interface Like {
   author: number;
+  created_on: Generated<Timestamp>;
   id: Generated<number>;
   post: number;
 }
 
 export interface Post {
   author: number;
+  created_on: Generated<Timestamp>;
+  description: string;
   id: Generated<number>;
+  image: string | null;
+  rating: number;
+  title: string;
 }
 
 export interface User {
